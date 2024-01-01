@@ -8,7 +8,7 @@ import {
 } from "./actions";
 
 const initial = {
-  favs: [],
+  favs:[],
   current: null,
   error: null,
   loading: true,
@@ -24,23 +24,38 @@ function readFavsFromLocalStorage() {
 
 export function myReducer(state = initial, action) {
   switch (action.type) {
+
     case FAV_ADD:
-      return state;
+      return {...state,favs:[state.favs, action.payload]}
 
     case FAV_REMOVE:
-      return state;
+      return {...state,favs:state.favs.filter(item => item.id !== action.payload)}
 
     case FETCH_SUCCESS:
-      return state;
+      return {
+        ...state,
+        loading: false,
+        current:action.payload,
+        error: null,}
 
     case FETCH_LOADING:
-      return state;
+      return {
+        ...state,
+        current: action.payload,
+        loading: true,
+        error: null,
+      }
 
     case FETCH_ERROR:
-      return state;
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      }
 
     case GET_FAVS_FROM_LS:
       return state;
+        
 
     default:
       return state;
